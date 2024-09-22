@@ -43,3 +43,14 @@ pli --help
 │ verify   Verify the integrity of the Parquet file by checking checksums, magic bytes, and corruption.               │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ```
+
+
+# todo
+- duckdb
+- tests
+- remote repo
+- fix name
+- pypi, brew
+- license
+- think about cutting edge features, as in smooth investigation on the presence of statistics, selectivity, overlap between rowgroups, etc
+
