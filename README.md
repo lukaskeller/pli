@@ -1,6 +1,11 @@
-# `<placeholder>` 🚀
+# `pli` 🚀
+pli /pli/ (noun, sv):
+1. Strict, disciplined behavior, often instilled or imposed.
 
-`<placeholder>` is a command-line tool built on **DuckDB** to provide lightning-fast inspection and validation of Apache Parquet files. It's simple, powerful, and gets the job done without unnecessary complexity. 🎯 Whether you need to check metadata, inspect records, or verify file integrity, `<placeholder>` offers everything you need in a flash.
+   _få pli på något_ — to get something under control.
+
+
+`pli`  is your Parquet CLI. Built with DuckDB to provide fast and easy inspection and validation of Apache Parquet files
 
 ## ⚡ Features
 - 🔍 **Meta**: Extract basic file metadata without loading the full schema.
@@ -14,12 +19,12 @@ Powered by **DuckDB**, this tool is designed for performance and reliability whe
 
 ## Installation
 
-You can install `<placeholder>` using your preferred method:
+You can install `pli` using your preferred method:
 
 ```bash
-pip install placeholder-cli  # For Python-based installation
+pip install pli-cli  # For Python-based installation
 # or
-brew install placeholder  # For macOS Homebrew users
+brew install pli  # For macOS Homebrew users
 ```
 
 Usage
