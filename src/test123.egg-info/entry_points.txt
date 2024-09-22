@@ -1,0 +1,3 @@
+[console_scripts]
+parquet-cli = cli.main:app
+pli = cli.main:app

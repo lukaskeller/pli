@@ -1,0 +1,25 @@
+[project]
+name = "test123"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2.3",
+    # "test123",
+    "typer>=0.12.5",
+]
+
+[project.scripts]
+pli = "cli.main:app"
+parquet-cli = "cli.main:app"
+
+[tool.uv]
+package = true
+dev-dependencies = [
+    "jupyterlab>=4.2.5",
+]
+
+[tool.uv.sources]
+test123 = { workspace = true }
+

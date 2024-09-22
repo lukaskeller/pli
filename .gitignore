@@ -1,0 +1,4 @@
+notebooks
+dist
+.venv
+.ruff_cahce
