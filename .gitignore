@@ -1,7 +1,8 @@
 notebooks
 dist
 .venv
-.ruff_cahce
+.ruff_cache
+.python_version
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

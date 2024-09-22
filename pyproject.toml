@@ -1,12 +1,11 @@
 [project]
-name = "test123"
+name = "pli"
 version = "0.1.0"
-description = "Add your description here"
+description = " is your Parquet CLI. Built with DuckDB to provide fast and easy inspection and validation of Apache Parquet files"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pandas>=2.2.3",
-    # "test123",
+    "duckdb>=1.1.0",
     "typer>=0.12.5",
 ]
 
@@ -17,7 +16,10 @@ parquet-cli = "cli.main:app"
 [tool.uv]
 package = true
 dev-dependencies = [
-    "jupyterlab>=4.2.5",
+    "moto[s3]>=5.0.14",
+    "pandas>=2.2.3",
+    "pyarrow>=17.0.0",
+    "pytest>=8.3.3",
 ]
 
 [tool.uv.sources]
