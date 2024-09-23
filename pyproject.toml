@@ -25,3 +25,6 @@ dev-dependencies = [
 [tool.uv.sources]
 test123 = { workspace = true }
 
+[tool.pytest.ini_options]
+#addopts = "-v --cov=pli --cov-report=term-missing"
+usefixtures = "make_test_files" # global fixture

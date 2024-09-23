@@ -1,12 +1,10 @@
+import os
 import pytest
 import pandas as pd
 import numpy as np
 import duckdb  # type: ignore
 import tempfile
 import pyarrow as pa
-from io import BytesIO
-
-import pyarrow.parquet as pq
 
 
 # fixture with lifecycle for entire run
@@ -23,44 +21,23 @@ def pandas_dataframe():
     return pd.DataFrame(data)
 
 
-@pytest.fixture(scope="function")
-def pyarrow_parquet_file(pandas_dataframe: pd.DataFrame):
-    df = pandas_dataframe
-    # Convert DataFrame to Parquet and write to BytesIO
-    buffer = BytesIO()
-    df.to_parquet(buffer)
-    buffer.seek(0)
-
-    return buffer
-
-
-# this fixture should use namedtempfile and yield the file object
 @pytest.fixture(scope="session")
-def pyarrow_parquet_file_path(pandas_dataframe: pd.DataFrame):
-    df = pandas_dataframe
-    # use context manager with tempfile to create a temporary file to write to
-    with tempfile.NamedTemporaryFile(suffix=".parquet") as f:
-        # write the parquet file
-        df.to_parquet(f.name)
-        yield f
+def temp_dir():
+    with tempfile.TemporaryDirectory() as newpath:
+        yield newpath
 
 
-# now create a parquetfile with duckdb
+# @pytest.mark.usefixtures("inside_temp_directory")
 @pytest.fixture(scope="session")
-def duckdb_parquet_file(pandas_dataframe: pd.DataFrame):
-    df = pandas_dataframe
+def make_test_files(pandas_dataframe: pd.DataFrame, temp_dir: str):
+    # print(temp_dir)
+    # Use pyarrow to write a parquet file
+    pandas_dataframe.to_parquet(
+        os.path.join(temp_dir, "pyarrow_plain.parquet"), engine="pyarrow"
+    )
 
-    # use context manager with tempfile to create a temporary file to write to
-    with tempfile.TemporaryFile() as f:
-        # create a duckdb connection
-        con = duckdb.connect(database=":memory:")
-        con.execute(
-            f"""
-        COPY df TO '{f.name}' (FORMAT 'parquet', CODEC 'zstd')
-        """
-        )
-        # read the file
-        f.seek(0)
-        buffer = BytesIO(f.read())
-
-    return buffer
+    # Use duckdb to write a parquet file
+    ddb_file = os.path.join(temp_dir, "duckdb_plain.parquet")
+    duckdb.execute(
+        f"COPY pandas_dataframe TO '{ddb_file}' (FORMAT 'parquet', CODEC 'zstd')"
+    )
