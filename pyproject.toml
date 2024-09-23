@@ -28,3 +28,7 @@ test123 = { workspace = true }
 [tool.pytest.ini_options]
 #addopts = "-v --cov=pli --cov-report=term-missing"
 usefixtures = "make_test_files" # global fixture
+
+[tool.ruff.lint.extend-per-file-ignores]
+"test/test_*.py" = ["F811"]
+"test/*_test.py" = ["F811"]

@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 import duckdb  # type: ignore
 import tempfile
-import pyarrow as pa
 
 
 # fixture with lifecycle for entire run

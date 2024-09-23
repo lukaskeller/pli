@@ -1,7 +1,7 @@
+import json
 import typer
 from typing import Optional
 import duckdb
-from rich import print
 
 from .helpers import format_relation, OutputFormat
 

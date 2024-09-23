@@ -1,4 +1,3 @@
-from tempfile import NamedTemporaryFile, NamedTemporaryFile
 import json
 import os
 
@@ -7,7 +6,7 @@ import pytest
 from typer.testing import CliRunner
 
 from cli.main import app
-from fixtures.file_gen import pandas_dataframe, temp_dir, make_test_files
+from fixtures.file_gen import pandas_dataframe, temp_dir, make_test_files  # noqa: F401
 
 runner = CliRunner()
 
