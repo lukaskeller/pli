@@ -18,6 +18,7 @@ package = true
 dev-dependencies = [
     "moto[s3]>=5.0.14",
     "pandas>=2.2.3",
+    "pre-commit>=3.8.0",
     "pyarrow>=17.0.0",
     "pytest>=8.3.3",
 ]
@@ -26,7 +27,6 @@ dev-dependencies = [
 test123 = { workspace = true }
 
 [tool.pytest.ini_options]
-#addopts = "-v --cov=pli --cov-report=term-missing"
 usefixtures = "make_test_files" # global fixture
 
 [tool.ruff.lint.extend-per-file-ignores]
