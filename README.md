@@ -27,7 +27,7 @@ pip install pli-cli  # For Python-based installation
 brew install pli  # For macOS Homebrew users
 ```
 
-Usage
+## Usage
 
 ```bash
 pli --help                                                                                                    
@@ -47,6 +47,16 @@ pli --help
 │ stats    Display statistics (min, max, count, etc.) for columns in the Parquet file.                                │
 │ verify   Verify the integrity of the Parquet file by checking checksums, magic bytes, and corruption.               │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+```
+
+## Contributing
+
+```bash
+brew install uv
+git clone git@github.com:lukaskeller/pli.git
+cd pli
+uv sync && uv run pre-commit && uv run pytest
+
 ```
 
 
