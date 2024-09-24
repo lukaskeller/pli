@@ -42,6 +42,6 @@ def make_test_files(pandas_dataframe: pd.DataFrame, temp_dir: str):
     )
 
     # fetch remote parquet file from arrow github repo
-    file_url_arrow = "https://github.com/apache/arrow-testing/blob/master/data/parquet/ARROW-17100.parquet"
-    file_path_arrow = os.path.join(temp_dir, "ARROW-17100.parquet")
-    os.system(f"wget {file_url_arrow} -O {file_path_arrow}")
+    # file_url_arrow = "https://github.com/apache/arrow-testing/blob/master/data/parquet/ARROW-17100.parquet"
+    # file_path_arrow = os.path.join(temp_dir, "ARROW-17100.parquet")
+    # os.system(f"wget {file_url_arrow} -O {file_path_arrow}")

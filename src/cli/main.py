@@ -1,9 +1,12 @@
 import json
+
 import typer
 from typing import Optional
 import duckdb
+import pyarrow.parquet as pq
+import tomlkit
 
-from .helpers import format_relation, OutputFormat
+from .helpers import format_relation, OutputFormat, stripper
 
 
 app = typer.Typer(
@@ -13,15 +16,37 @@ app = typer.Typer(
 
 @app.command()
 def meta(
-    file: str, format: OutputFormat = typer.Option("pretty", help="Output format")
+    file: str,
+    format: OutputFormat = typer.Option("pretty", help="Output format"),
+    include_row_groups: bool = typer.Option(
+        False, "--include-row-groups", help="Include row group meta data in output"
+    ),
 ):
     """
-    Display basic metadata of the Parquet file without loading the schema.
+    Extract metadata from the Parquet file using pyarrow.
+
+    Field descriptions see https://arrow.apache.org/docs/python/generated/pyarrow.parquet.FileMetaData.html#pyarrow.parquet.FileMetaData
 
     :param file: Path to the Parquet file.
-    :param json: Output in JSON format.
+    :param format: Output format (pretty, csv, json, jsonl, toml).
+    :param include_row_groups: Include row group meta data in output.
     """
-    typer.echo(f"Showing metadata for {file} (JSON: {json})")
+
+    meta = pq.read_metadata(file)
+    meta_dict = meta.to_dict()
+    if not include_row_groups:
+        meta_dict.pop("row_groups", None)
+    else:
+        meta_dict = stripper(meta_dict)
+
+    if format == OutputFormat.json:
+        typer.echo(json.dumps(meta_dict, indent=2))
+    elif (
+        format == OutputFormat.pretty or format == OutputFormat.toml
+    ):  # toml is pretty here
+        typer.echo(tomlkit.dumps(meta_dict))
+
+    # typer.echo(f"Showing metadata for {file} (JSON: {json})")
 
 
 @app.command()
