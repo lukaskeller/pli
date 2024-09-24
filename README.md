@@ -5,7 +5,7 @@ pli /pli/ (noun, sv):
    _få pli på något_ — to get something under control.
 
 
-`pli`  is your Parquet CLI. Built with DuckDB to provide fast and easy inspection and validation of Apache Parquet files
+`pli`  is your Parquet Inspection CLI. Built with DuckDB & PyArrow to provide fast and easy inspection of Apache Parquet files and their meta data
 
 ## ⚡ Features
 - 🔍 **Meta**: Extract basic file metadata without loading the full schema.
