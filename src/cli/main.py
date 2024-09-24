@@ -44,24 +44,6 @@ def head(
 
 
 @app.command()
-def head_old(
-    file: str,
-    records: Optional[int] = typer.Option(
-        10, "--records", help="Number of records to show"
-    ),
-    json: Optional[bool] = typer.Option(False, "--json", help="Output in JSON format"),
-):
-    """
-    Display the first N records from the Parquet file.
-
-    :param file: Path to the Parquet file.
-    :param records: Number of records to display (default: 10).
-    :param json: Output in JSON format.
-    """
-    typer.echo(f"Showing the first {records} records for {file} (JSON: {json})")
-
-
-@app.command()
 def stats(
     file: str,
     json: Optional[bool] = typer.Option(
@@ -80,8 +62,10 @@ def stats(
 @app.command()
 def cat(
     file: str,
-    tolerate_large_file: Optional[bool] = typer.Option(
-        False, "--tolerate-large-file", help="Also cat files with >1M rows"
+    line_limit: Optional[int] = typer.Option(  # default 1M, -1 to disable
+        1_000_000,
+        "--line-limit",
+        help="Limit the number of lines to display. -1 to disable.",
     ),
 ):
     """
@@ -90,14 +74,14 @@ def cat(
     :param file: Path to the Parquet file.
     :param tolerate_large_file: Also cat files with >1M rows.
     """
-    if not tolerate_large_file:
+    if not line_limit == -1:
         # check row count
         res = duckdb.query(
             f"SELECT COUNT(*) as n_rows FROM read_parquet('{file}')"
         ).fetchall()
-        if res[0][0] > 1_000_000:
+        if res[0][0] > line_limit:
             typer.echo(
-                f"File {file} has more than 1M rows. If you are sure use --tolerate-large-file to proceed."
+                f"File {file} has more than {line_limit} rows. Change --line-limit or disable with -1."
             )
             raise typer.Exit(code=1)
 
