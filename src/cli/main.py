@@ -6,7 +6,7 @@ import duckdb
 import pyarrow.parquet as pq
 import tomlkit
 
-from .helpers import format_relation, OutputFormat, stripper
+from .helpers import format_relation, OutputFormat, MetaOutputFormat, tomlizer
 
 
 app = typer.Typer(
@@ -17,7 +17,7 @@ app = typer.Typer(
 @app.command()
 def meta(
     file: str,
-    format: OutputFormat = typer.Option("pretty", help="Output format"),
+    format: MetaOutputFormat = typer.Option("toml", help="Metadata output format"),
     include_row_groups: bool = typer.Option(
         False, "--include-row-groups", help="Include row group meta data in output"
     ),
@@ -37,13 +37,11 @@ def meta(
     if not include_row_groups:
         meta_dict.pop("row_groups", None)
     else:
-        meta_dict = stripper(meta_dict)
+        meta_dict = tomlizer(meta_dict)
 
-    if format == OutputFormat.json:
+    if format == MetaOutputFormat.json:
         typer.echo(json.dumps(meta_dict, indent=2))
-    elif (
-        format == OutputFormat.pretty or format == OutputFormat.toml
-    ):  # toml is pretty here
+    elif format == MetaOutputFormat.toml:  # toml is pretty here
         typer.echo(tomlkit.dumps(meta_dict))
 
     # typer.echo(f"Showing metadata for {file} (JSON: {json})")
@@ -66,22 +64,6 @@ def head(
     query = f"SELECT * FROM read_parquet('{file}') LIMIT {records};"
     res = duckdb.query(query)  # not execute
     typer.echo(format_relation(res, format))
-
-
-@app.command()
-def stats(
-    file: str,
-    json: Optional[bool] = typer.Option(
-        False, "--json", help="Output stats in JSON format"
-    ),
-):
-    """
-    Display statistics (min, max, count, etc.) for columns in the Parquet file.
-
-    :param file: Path to the Parquet file.
-    :param json: Output in JSON format.
-    """
-    typer.echo(f"Showing stats for {file} (JSON: {json})")
 
 
 @app.command()
@@ -113,6 +95,22 @@ def cat(
     # read up the whole file
     res = duckdb.query(f"SELECT * FROM read_parquet('{file}');")
     typer.echo(format_relation(res, OutputFormat.csv))
+
+
+@app.command()
+def stats(
+    file: str,
+    json: Optional[bool] = typer.Option(
+        False, "--json", help="Output stats in JSON format"
+    ),
+):
+    """
+    Display statistics (min, max, count, etc.) for columns in the Parquet file.
+
+    :param file: Path to the Parquet file.
+    :param json: Output in JSON format.
+    """
+    typer.echo(f"Showing stats for {file} (JSON: {json})")
 
 
 @app.command()

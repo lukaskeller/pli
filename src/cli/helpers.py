@@ -7,6 +7,10 @@ class OutputFormat(str, Enum):
     csv = "csv"
     json = "json"
     jsonl = "jsonl"
+
+
+class MetaOutputFormat(str, Enum):
+    json = "json"
     toml = "toml"
 
 
@@ -15,6 +19,7 @@ def format_relation(
 ) -> str:
     if format == OutputFormat.csv:
         # materializes the CSV in full as a string
+        # there are probably more efficient ways to do this with duckdb
         s = duckdb_result.to_df().to_csv(index=False)
         # remove trailing newlines
         return s.strip()
@@ -28,20 +33,20 @@ def format_relation(
         raise NotImplementedError(f"Output format {format} not implemented")
 
 
-def stripper(data):
+def tomlizer(data):
     """
     Workaround for:
     https://github.com/sdispater/tomlkit/issues/240
 
-    removes empty values from a dictionary
+    replaces empty values with "NONE" to preserve the existence of the key and to ensure convertability ofdict to toml
     """
     new_data = {}
     for k, v in data.items():
         # if list
         if isinstance(v, list):
-            v = [stripper(i) for i in v]
+            v = [tomlizer(i) for i in v]
         if isinstance(v, dict):
-            v = stripper(v)
+            v = tomlizer(v)
         if v not in ("", None, {}):
             new_data[k] = v
         else:

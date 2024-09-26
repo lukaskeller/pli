@@ -46,7 +46,7 @@ pli --help
 │ schema   Display the schema of the Parquet file.                                                                    │
 │ stats    Display statistics (min, max, count, etc.) for columns in the Parquet file.                                │
 │ verify   Verify the integrity of the Parquet file by checking checksums, magic bytes, and corruption.               │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## Contributing
