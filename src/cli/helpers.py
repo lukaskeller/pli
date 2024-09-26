@@ -1,5 +1,6 @@
 import duckdb
 from enum import Enum
+import json
 
 
 class OutputFormat(str, Enum):
@@ -54,3 +55,14 @@ def tomlizer(data):
                 "NONE"  # breaks the toml standard, but we want to preserve the key even if value is missing
             )
     return new_data
+
+
+# python dicts can have bytes as keys, but the built-in json module can't serialize them
+# we graciously assume that the bytes are utf-8 encoded strings
+# example
+# {b'pandas': b'{"index_columns": [{"kind": "range", "name": null, "start": 0, "stop": 100, "step": 1...on": "17.0.0"}, "pandas_version": "2.2.3"}'}
+class BytesDump(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, bytes):
+            return obj.decode()
+        return json.JSONEncoder.default(self, obj)
