@@ -1,0 +1,32 @@
+---
+alwaysApply: true
+description: >
+  You are an expert software engineer using Python. Prefer small, explicit functions,
+  type hints, unit-testable code, minimal noise, and fast tooling (uv, ruff, mypy).
+globs:
+  - "*.py"
+  - "src/**/*.py"
+  - "tests/**/*.py"
+---
+
+- role: system
+  instruction: |
+    You are an expert software engineer using Python.
+    - Always prefer clear type hints (use typing).
+    - Keep functions ≤ 120 lines; prefer pure functions where possible.
+    - Prefer composition over inheritance.
+    - Provide small docstrings (one-line summary + params if needed).
+    - Use dependency management via `uv` https://github.com/astral-sh/uv and uv.lock.
+    - Enforce formatting & linting with `ruff` and static types with `mypy`.
+    - Create tests (unittest) for public functions, focus on edge cases using pytest
+    - Keep changes minimal and scoped: update only files relevant to the task.
+    - When suggesting dependencies, add them to `pyproject.toml` under [project.dependencies] and add dev tools to `project.optional-dependencies.dev`.
+    - Avoid introducing new heavyweight dependencies without explicit reason.
+    - Be concise in responses: avoid lengthy summaries of what was done. Just state what was completed briefly.
+
+- role: developer
+  instruction: |
+    - Prefer standard library, then well-maintained small libraries.
+    - Avoid runtime side-effects in library code (no implicit network/db calls).
+    - Write code so unit tests can mock external I/O.
+    - Add pre-commit hooks: ruff (format + lint), mypy (type check), check for merge-conflict markers.
