@@ -40,7 +40,6 @@ pli --help
 │ --help                        Show this message and exit.                                                           │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ──────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ cat      Concatenate and display all records in the Parquet file.                                                   │
 │ head     Display the first N records from the Parquet file.                                                         │
 │ meta     Display basic metadata of the Parquet file without loading the schema.                                     │
 │ schema   Display the schema of the Parquet file.                                                                    │
@@ -60,7 +59,7 @@ uv sync && uv run pre-commit && uv run pytest
 ```
 
 
-# todo
+# todo: curosr: ignore!
 - duckdb
 - tests
 - remote repo
