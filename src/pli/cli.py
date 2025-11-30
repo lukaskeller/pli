@@ -15,6 +15,13 @@ app = typer.Typer(
 console = Console()
 
 
+@app.callback(invoke_without_command=True)
+def default(ctx: typer.Context) -> None:
+    """Default callback that shows help when no command is provided."""
+    if ctx.invoked_subcommand is None:
+        typer.echo(ctx.get_help())
+
+
 def _validate_parquet_file(file_path: Path) -> None:
     """Validate that the file exists and is a parquet file."""
     if not file_path.exists():
@@ -150,6 +157,9 @@ def verify(file: Path = typer.Argument(..., help="Path to the Parquet file")) ->
         table.add_column("Details", style="yellow")
 
         # Check magic bytes
+        # Parquet file format spec: https://github.com/apache/parquet-format
+        # Magic bytes "PAR1" (4 bytes) are defined in the Parquet File Format specification
+        # See: https://github.com/apache/parquet-format/blob/master/Format.md
         with open(file, "rb") as f:
             magic = f.read(4)
             is_valid_magic = magic == b"PAR1"
